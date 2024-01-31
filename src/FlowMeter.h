@@ -21,8 +21,9 @@ class FlowMeter {
     static void begin();
 
     // Enable and disable
-    static void pause();
-    static void resume();
+    static void pause();  // Detaches the interrupt so the meter doesn't trigger
+    static void resume(); // Enables the interrupt for data recording
+    static bool isRunning();  // Reports wheter or not the meter is collecting data
     
     // Data Collection
     static float getVolume();
@@ -57,6 +58,7 @@ class FlowMeter {
     static uint32_t _flowRateCounts;
     static uint32_t _flowRateCountsPrevious;
     static uint32_t _lastFlowRateMillis;
+    static bool _isRunning;
 
 };
 

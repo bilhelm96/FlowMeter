@@ -9,6 +9,7 @@ uint32_t FlowMeter::_flowVolumeCounts;
 uint32_t FlowMeter::_flowRateCounts;
 uint32_t FlowMeter::_flowRateCountsPrevious;
 uint32_t FlowMeter::_lastFlowRateMillis;
+bool FlowMeter::_isRunning;
 
 
 FlowMeter::FlowMeter(uint8_t pin) {
@@ -33,15 +34,20 @@ void FlowMeter::begin() {
   // Set pin to input and attach interrupt
   pinMode(_flowPin, INPUT_PULLUP);
   resume();
-  
 }
 
 void FlowMeter::pause() {
   detachInterrupt(_flowPin);
+  _isRunning = false;
 }
 
 void FlowMeter::resume() {
   attachInterrupt(digitalPinToInterrupt(_flowPin), flowInterrupt, RISING);
+  _isRunning = true;
+}
+
+bool FlowMeter::isRunning() {
+  return _isRunning;
 }
 
 FlowMeterCalibrationParams FlowMeter::getCalibrationParams() {

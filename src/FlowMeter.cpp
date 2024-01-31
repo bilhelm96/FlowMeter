@@ -32,6 +32,15 @@ FlowMeter::FlowMeter(uint8_t pin) {
 void FlowMeter::begin() {
   // Set pin to input and attach interrupt
   pinMode(_flowPin, INPUT_PULLUP);
+  resume();
+  
+}
+
+void FlowMeter::pause() {
+  detachInterrupt(_flowPin);
+}
+
+void FlowMeter::resume() {
   attachInterrupt(digitalPinToInterrupt(_flowPin), flowInterrupt, RISING);
 }
 

@@ -1,5 +1,5 @@
 ##################################
-# Datatypes (KEYWORD1)
+# Class (KEYWORD1)
 ##################################
 FlowMeter KEYWORD1
 
@@ -12,7 +12,16 @@ getFlowRate KEYWORD2
 resetVolme KEYWORD2
 getFlowCounts KEYWORD2
 getFlowRateCounts KEYWORD2
+pause KEYWORD2
+resume KEYWORD2
 
 ##################################
 # Constants (LITERAL1)
 ##################################
+
+
+#########################################################
+# Structs (LITERAL3)
+#########################################################
+
+SFEWeatherMeterKitCalibrationParams LITERAL3

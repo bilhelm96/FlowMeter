@@ -19,6 +19,10 @@ class FlowMeter {
     // Constructor
     FlowMeter(uint8_t pin);
     static void begin();
+
+    // Enable and disable
+    static void pause();
+    static void resume();
     
     // Data Collection
     static float getVolume();

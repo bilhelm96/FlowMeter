@@ -1,17 +1,6 @@
 #include <Arduino.h>
 #include "FlowMeter.h"
 
-// Static member definintions
-FlowMeterCalibrationParams FlowMeter::_calibrationParams;
-uint8_t FlowMeter::_flowPin;
-float FlowMeter::_volume;
-uint32_t FlowMeter::_flowVolumeCounts;
-uint32_t FlowMeter::_flowRateCounts;
-uint32_t FlowMeter::_flowRateCountsPrevious;
-uint32_t FlowMeter::_lastFlowRateMillis;
-bool FlowMeter::_isRunning;
-
-
 FlowMeter::FlowMeter(uint8_t pin) {
   // Set sensor pin
   _flowPin = pin;
@@ -30,6 +19,10 @@ FlowMeter::FlowMeter(uint8_t pin) {
   _lastFlowRateMillis = millis();
 }
 
+FlowMeter::~FlowMeter() {
+  detachInterrupt(_flowPin);
+}
+
 void FlowMeter::begin() {
   // Set pin to input and attach interrupt
   pinMode(_flowPin, INPUT_PULLUP);
@@ -42,7 +35,7 @@ void FlowMeter::pause() {
 }
 
 void FlowMeter::resume() {
-  attachInterrupt(digitalPinToInterrupt(_flowPin), flowInterrupt, RISING);
+  attachInterrupt(digitalPinToInterrupt(_flowPin), std::bind(&FlowMeter::flowInterrupt,this), RISING);
   _isRunning = true;
 }
 

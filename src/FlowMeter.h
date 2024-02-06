@@ -2,6 +2,7 @@
 #define FLOW_METER
 
 #include <Arduino.h>
+#include <FunctionalInterrupt.h>
 
 struct FlowMeterCalibrationParams {
   // Time between flow rate recorings (ms)
@@ -18,47 +19,50 @@ class FlowMeter {
   public:
     // Constructor
     FlowMeter(uint8_t pin);
-    static void begin();
+    ~FlowMeter();
+
+    void begin();
 
     // Enable and disable
-    static void pause();  // Detaches the interrupt so the meter doesn't trigger
-    static void resume(); // Enables the interrupt for data recording
-    static bool isRunning();  // Reports wheter or not the meter is collecting data
+    void pause();
+    void resume();
+    bool isRunning();
     
     // Data Collection
-    static float getVolume();
-    static float getFlowRate();
-    static void resetVolme();
+    float getVolume();
+    float getFlowRate();
+    void resetVolme();
 
     // Sensor calibration parameters
-    static FlowMeterCalibrationParams getCalibrationParams();
-    static void setCalibrationParams (FlowMeterCalibrationParams params);
+    FlowMeterCalibrationParams getCalibrationParams();
+    void setCalibrationParams (FlowMeterCalibrationParams params);
 
     // Helper functions for calibrating
-    static uint32_t getFlowCounts();
-    static uint32_t getFlowRateCounts();
-
+    uint32_t getFlowCounts();
+    uint32_t getFlowRateCounts();
+  
+    
 
   private:
-    // Interrupt handler
-    static void flowInterrupt();
-    
     // Updates flow rate
-    static void updateFlowRate();
+    void updateFlowRate();
 
     // Sensor pin
-    static uint8_t _flowPin;
+    uint8_t _flowPin;
 
     // Meter calibration parameters
-    static FlowMeterCalibrationParams _calibrationParams;
+    FlowMeterCalibrationParams _calibrationParams;
+
+    // Interrupt handler
+    void flowInterrupt();
 
     // Variables to track measurements
-    static float _volume;
-    static uint32_t _flowVolumeCounts;
-    static uint32_t _flowRateCounts;
-    static uint32_t _flowRateCountsPrevious;
-    static uint32_t _lastFlowRateMillis;
-    static bool _isRunning;
+    float _volume;
+    volatile uint32_t _flowVolumeCounts;
+    volatile uint32_t _flowRateCounts;
+    uint32_t _flowRateCountsPrevious;
+    uint32_t _lastFlowRateMillis;
+    bool _isRunning;
 
 };
 

@@ -1,2 +1,6 @@
 FlowMeter.code-workspace
 .DS_Store
+platformio.ini
+lib
+include
+test

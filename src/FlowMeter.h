@@ -21,11 +21,11 @@ class FlowMeter {
     FlowMeter(uint8_t pin);
     ~FlowMeter();
 
-    void begin();
+    bool begin();  // Returns true if pin is able to be attached to an interrupt
 
     // Enable and disable
     void pause();
-    void resume();
+    bool resume();
     bool isRunning();
     
     // Data Collection

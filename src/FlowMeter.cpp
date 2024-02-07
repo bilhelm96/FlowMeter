@@ -23,10 +23,10 @@ FlowMeter::~FlowMeter() {
   detachInterrupt(_flowPin);
 }
 
-void FlowMeter::begin() {
+bool FlowMeter::begin() {
   // Set pin to input and attach interrupt
   pinMode(_flowPin, INPUT_PULLUP);
-  resume();
+  return resume();
 }
 
 void FlowMeter::pause() {
@@ -34,9 +34,14 @@ void FlowMeter::pause() {
   _isRunning = false;
 }
 
-void FlowMeter::resume() {
-  attachInterrupt(digitalPinToInterrupt(_flowPin), std::bind(&FlowMeter::flowInterrupt,this), RISING);
-  _isRunning = true;
+bool FlowMeter::resume() {
+  if (digitalPinToInterrupt(_flowPin) != -1)
+  {
+    attachInterrupt(digitalPinToInterrupt(_flowPin), std::bind(&FlowMeter::flowInterrupt,this), RISING);
+    _isRunning = true;
+    return true;
+  }
+  return false;
 }
 
 bool FlowMeter::isRunning() {

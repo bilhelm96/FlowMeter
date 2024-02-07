@@ -79,6 +79,8 @@ void FlowMeter::resetVolme() {
   _flowVolumeCounts = 0;
 }
 
+// Flow rate code was adapted from the SparkFun Weather Meter Kit Arduino Library wind speed algorithm
+// https://github.com/sparkfun/SparkFun_Weather_Meter_Kit_Arduino_Library
 void FlowMeter::updateFlowRate() {
   // The flow meter generates interrupts as it spins. Because these are
   // discrete pulses, we can't get an instantaneous measurement of the flow

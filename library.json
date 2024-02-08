@@ -2,7 +2,7 @@
     "name": "FlowMeter",
     "keywords": "sensor, liquid, flow rate, volume",
     "description": "A library for using flow meters with arduino",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "authors":
     {
         "name": "Bill Wilhelm",
@@ -14,5 +14,5 @@
     },
     "license": "MIT",
     "frameworks": "Arduino",
-    "platforms": "*"
+    "platforms": "espressif32"
 }

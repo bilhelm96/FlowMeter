@@ -43,4 +43,10 @@ struct FlowMeterCalibrationParams {
 };
 ```
 
-The flow rate 
+The flow rate is calculated via a moving window filter.  To simplify calculations a fixed window time period is used to count the number of pulses from the flow meter.  The flow rate is calculated for the last complete window so there is a slight lag in the flow rate measurement.  The **flowEateMeasurementPeriod** variable defines the size of the moving window filter in milliseconds.  A smaller value gives more instantaneous readings while a larger one gives a better average flow. Anywhere from 250 to 1000 milliseconds should be a good range for most applications.  
+
+Like all mechanical switches, there can be some bounce in the contacts and the **minMillisPerReading** variable sets a time period where multiple contacts will be ignored to remove the bouncing and stabilize the readings.  A range of 3 - 10 milliseconds is normal.  
+
+In order to be unit agnostic for flow rate and volume the library requires the user to calculate what volume of liquid passes through the sensor for each contact of the counter.  The **volPerFlowCount** variable can then be set for each application.  To calculate the **volPerFlowCount** initially set the variable to 1 and send a known quantity of fluid through the meter.  The volume reported will be the number of counts for that volume.  Divide the volume by the number of counts and put that value in the variable.  For example if you pour 200ml through and it reports 1257 tics the value of **volPerFlowCount** would be 200 / 1257 = 0.159.  Ideally you you perform multiple calibration runs and calculate the average volume per counter.
+
+There are also two functions that can be used for calibration **getFlowCounts** returns the number of volume counts since last reset and **getFlowRateCounts** gives the number of flow rate counts in the current time window.
